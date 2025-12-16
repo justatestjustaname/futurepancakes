@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Simone Buys’ Batter-Based Pancake Prognostics Institute</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:"Comic Sans MS","Comic Sans",cursive;
+  background:linear-gradient(180deg,#f8c8dc,#e6d9ff);
+  color:#3b2b4a;
+  overflow-x:hidden;
+}
+
+.start-screen{
+  position:relative;
+  text-align:center;
+  margin:0;
+  padding:0;
+}
+
+.start-screen img{
+  width:100%;
+  max-height:600px;
+  object-fit:cover;
+}
+
+.start-screen h1{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:4rem;
+  color:#ff69b4;
+  text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #ff69b4;
+  cursor:pointer;
+  transition:text-shadow 0.3s;
+}
+
+.start-screen h1:hover{
+  text-shadow: 0 0 10px #ffb6c1, 0 0 20px #ffb6c1, 0 0 30px #ffb6c1, 0 0 50px #ffb6c1;
+}
+
+.panel,.simone{
+  max-width:900px;
+  margin:2rem auto;
+  padding:2rem;
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 0 30px rgba(120,80,150,.35);
+}
+
+.simone{
+  display:flex;
+  gap:2rem;
+  align-items:flex-start;
+}
+
+.simone img{
+  width:180px;
+  border-radius:50%;
+  border:4px solid #f3b6d8;
+}
+
+.hidden{display:none}
+
+progress{
+  width:100%;
+  height:20px;
+  margin-bottom:1rem;
+  -webkit-appearance:none;
+}
+
+progress::-webkit-progress-bar{
+  background: #eee;
+  border-radius:10px;
+}
+
+progress::-webkit-progress-value{
+  border-radius:10px;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+}
+
+#predictionText{
+  max-width:480px;
+}
+
+.gif{
+  position:fixed;
+  width:120px;
+  opacity:0;
+  pointer-events:none;
+  z-index:1;
+  transition:opacity 5s linear;
+}
+
+.big-button{
+  display:inline-block;
+  font-size:2rem;
+  padding:1rem 2rem;
+  border-radius:15px;
+  border:none;
+  cursor:pointer;
+  background:linear-gradient(#007bff ,#1e90ff,#4169e1);
+  color:white;
+  font-weight:bold;
+  transition:transform 0.3s, box-shadow 0.3s;
+  text-align:center;
+  margin:0.5rem 0;
+}
+
+.big-button:hover{
+  transform:scale(1.05);
+  background:linear-gradient(135deg,#ff69b4,#ffb6c1);
+  box-shadow:0 0 20px rgba(255,105,180,0.7);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 20px rgba(255,105,180,0.7); }
+  50% { transform: scale(1.1); box-shadow: 0 0 40px rgba(255,105,180,1); }
+  100% { transform: scale(1); box-shadow: 0 0 20px rgba(255,105,180,0.7); }
+}
+
+.pulsing{
+  animation: pulse 1s infinite;
+}
+
+footer{
+  font-size:.6rem;
+  text-align:center;
+  margin:4rem 1rem 1rem;
+  color:#6d5473;
+}
+
+#error{
+  color:red;
+  font-weight:bold;
+  margin-top:1rem;
+}
+</style>
+</head>
+
+<body>
+
+<img src="02.gif" class="gif" style="top:15%;left:7%">
+<img src="03.gif" class="gif" style="top:40%;right:5%">
+<img src="04.gif" class="gif" style="bottom:18%;left:3%">
+<img src="05.gif" class="gif" style="bottom:20%;right:12%">
+<img src="06.gif" class="gif" style="top:13%;left:40%">
+
+<audio id="panflute" src="01.m4a" loop></audio>
+
+<section class="start-screen" id="startScreen">
+  <img src="pannenkoek.jpg" alt="Pannenkoek">
+  <h1 onclick="startApp()">Enter the Pancake</h1>
+</section>
+
+<div id="app" class="hidden">
+
+<header>
+  <h1>Simone Buys’ Batter-Based Pancake Prognostics Institute</h1>
+  <h2>Applied Pancake Divination · Astrocartography · Meridiaaninterpretatie</h2>
+</header>
+
+<section class="simone">
+  <img src="01.gif" alt="Dr. Simone Buys">
+  <div>
+    <p><strong>Welkom.</strong></p>
+    <p>Ik ben <em>dr. Simone Buys</em>. Tot voor kort doceerde ik aan een creatieve hbo-opleiding, waar mijn visionaire plannen zich buiten het toetskader bevonden.</p>
+    <p>Na een interventie van <strong>drie erkende mediums</strong> heb ik het licht gezien en erkend wat zich reeds langer manifesteerde: ik ben pannenkoeklezer.</p>
+    <p>Mijn specialisaties omvatten: 
+      <ul>
+        <li>Astrocartografie op basis van beslag</li>
+        <li>Meridiaanlezing van gebakken oppervlakken</li>
+        <li>Volleerd chakrakraken (niveau IV)</li>
+      </ul>
+    </p>
+    <p>U kent mij van de podcast <em>Cumulatief Inzicht</em> of mijn bestseller <em>Het formatieve pad (of hoe ik in de feedback-flow kwam)</em>.</p>
+    <p>Deze applicatie vormt mijn dissertatie-side-hustle. Uw pannenkoek is geen toeval.</p>
+  </div>
+</section>
+
+<section class="panel" id="uploadPanel">
+  <h3>Stap 1 — Upload uw pannenkoek</h3>
+  <label for="pancakeInput" class="big-button">Upload hier uw pannenkoek!</label>
+  <input type="file" id="pancakeInput" accept="image/*" class="hidden">
+  <div id="error" class="hidden">Er is geen foto geüpload, doe dit eerst!</div><br><br>
+  <button id="analyzeButton" class="big-button hidden" onclick="startAnalysis()">Analyseer uw pannenkoek!</button>
+</section>
+
+<section class="panel hidden" id="analysisPanel">
+  <h3>Analyse wordt uitgevoerd</h3>
+  <label>Meridiaanextractie</label>
+  <progress id="p1" value="0" max="100"></progress>
+  <label>Astrocartografische mapping</label>
+  <progress id="p2" value="0" max="100"></progress>
+  <label>Beslaggeheugen-kalibratie</label>
+  <progress id="p3" value="0" max="100"></progress>
+</section>
+
+<section class="panel hidden" id="reportPanel">
+  <h3>Uw Pancake Prognosis</h3>
+  <div class="report-wrap">
+    <canvas id="reportCanvas" width="480" height="480"></canvas>
+    <div id="predictionText"></div>
+  </div>
+  <br>
+  <button onclick="downloadReport()">Download volledig rapport (PNG)</button>
+</section>
+
+<footer>
+  Dit instituut biedt geen garanties en vervangt geen logisch denken.
+</footer>
+
+<script>
+const startScreen=document.getElementById("startScreen");
+const app=document.getElementById("app");
+const audio=document.getElementById("panflute");
+const gifs=document.querySelectorAll(".gif");
+const errorMsg=document.getElementById("error");
+const pancakeInput=document.getElementById("pancakeInput");
+const analyzeBtn=document.getElementById("analyzeButton");
+const uploadPanel=document.getElementById("uploadPanel");
+const analysisPanel=document.getElementById("analysisPanel");
+const reportPanel=document.getElementById("reportPanel");
+const predictionText=document.getElementById("predictionText");
+
+const randomSentences=[
+"🌸 “Moge je dag zo luchtig zijn als een wolk van verse pannenkoekbeslag.”",
+"🔮 “In de cirkel van het universum draait alles… net als een perfecte pannenkoek in de pan.”",
+"💛 “Elke pannenkoek is een cirkel van oneindige liefde… net zoals jij.”",
+"🌺 “Moge je leven zo zoet zijn als de honing die over je spirituele pannenkoek stroomt.”",
+"🌈 “Moge regenbogen van siroop je pad verlichten en je spirit voeden.”"
+];
+
+function startApp(){
+  startScreen.classList.add("hidden");
+  app.classList.remove("hidden");
+  audio.play();
+  gifs.forEach(g=>{
+    setTimeout(()=>fadeGif(g),Math.random()*5000);
+  });
+}
+
+function fadeGif(gif){
+  gif.style.opacity=1;
+  setTimeout(()=>gif.style.opacity=0,10000);
+  setTimeout(()=>fadeGif(gif),15000);
+}
+
+pancakeInput.addEventListener("change", ()=>{
+  if(pancakeInput.files.length){
+    analyzeBtn.classList.remove("hidden");
+    analyzeBtn.classList.add("pulsing");
+  }
+});
+
+function startAnalysis(){
+  if(!pancakeInput.files.length){
+    errorMsg.classList.remove("hidden");
+    return;
+  } else{
+    errorMsg.classList.add("hidden");
+  }
+  uploadPanel.classList.add("hidden");
+  analysisPanel.classList.remove("hidden");
+  let bars=["p1","p2","p3"];
+  let i=0;
+
+  function fillBar(){
+    if(i>=bars.length) return showReport();
+    let bar=document.getElementById(bars[i]);
+    let val=0;
+    let interval=setInterval(()=>{
+      val+=Math.random()*7;
+      if(val>100) val=100;
+      bar.value=val;
+      if(val>=100){
+        clearInterval(interval);
+        i++;
+        setTimeout(fillBar,Math.random()*400+200);
+      }
+    },100);
+  }
+  fillBar();
+}
+
+function showReport(){
+  analysisPanel.classList.add("hidden");
+  reportPanel.classList.remove("hidden");
+
+  const file=pancakeInput.files[0];
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const c=document.getElementById("reportCanvas");
+      const ctx=c.getContext("2d");
+
+      ctx.save();
+      const angle=(Math.random()-0.5)*0.04;
+      ctx.translate(240,240);
+      ctx.rotate(angle);
+      ctx.translate(-240,-240);
+      ctx.fillStyle="white";
+      ctx.fillRect(0,0,480,480);
+      ctx.drawImage(img,0,0,480,480);
+
+      // Willekeurige cartografische lijnen
+      for(let i=0;i<20;i++){
+        ctx.strokeStyle=i%2?"rgba(0,0,0,.9)":"rgba(90,0,120,.9)";
+        ctx.lineWidth=2+Math.random()*2;
+        ctx.beginPath();
+        ctx.moveTo(Math.random()*480,Math.random()*480);
+        ctx.lineTo(Math.random()*480,Math.random()*480);
+        ctx.stroke();
+      }
+
+      const planets=["Venus","Mars","Mercury","Jupiter","Saturn"];
+      for(let i=0;i<planets.length;i++){
+        const x=Math.random()*480;
+        const y=Math.random()*480;
+        ctx.beginPath();
+        ctx.arc(x,y,6+Math.random()*6,0,Math.PI*2);
+        ctx.fillStyle="rgba(255,215,0,.95)";
+        ctx.fill();
+        ctx.fillStyle="black";
+        ctx.font="12px Comic Sans MS";
+        ctx.fillText(planets[i]+" in Beslaghuis "+(i+1),x+8,y+4);
+      }
+
+      ctx.restore();
+
+      const imageData=ctx.getImageData(0,0,480,480);
+      for(let i=0;i<imageData.data.length;i+=4){
+        const rand=Math.random()*10-5;
+        imageData.data[i]+=rand;
+        imageData.data[i+1]+=rand;
+        imageData.data[i+2]+=rand;
+      }
+      ctx.putImageData(imageData,0,0);
+
+      const metrics=analyzeImage(ctx,480,480);
+      predictionText.innerHTML=generatePrediction(metrics);
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function analyzeImage(ctx,w,h){
+  const data=ctx.getImageData(0,0,w,h).data;
+  let total=0,contrast=0;
+  for(let i=0;i<data.length;i+=4){
+    const b=(data[i]+data[i+1]+data[i+2])/3;
+    total+=b;
+    contrast+=Math.abs(b-128);
+  }
+  return{brightness:total/(data.length/4),contrast:contrast/(data.length/4)};
+}
+
+function generatePrediction(m){
+  let profile=m.brightness>150?"licht":m.contrast>60?"intens":"diffuus";
+  const texts={
+    licht:`<p><strong>Algemene duiding</strong><br>Uw pannenkoek toont openheid en ontwijking. Wat zichtbaar is vraagt niet om actie.</p>
+<p><strong>Liefde</strong><br>Er ontstaat een contact dat licht begint en onverwacht intens kan worden. Venus in Beslaghuis II beïnvloedt emoties subtiel.</p>
+<p><strong>Werk</strong><br>U krijgt erkenning zonder dat het opvalt. Mars retrograde in Randzone IV kan tijdelijk frustratie veroorzaken.</p>
+<p><strong>Gezondheid</strong><br>Let op energiepieken; chakra-ritmes wijzen op lichte spanning in meridiaan III.</p>`,
+
+    intens:`<p><strong>Algemene duiding</strong><br>Sterke contrasten wijzen op innerlijke conflicten die niet afgerond zijn. Astrologische invloeden vragen reflectie.</p>
+<p><strong>Liefde</strong><br>Iemand projecteert helderheid waar u nuance voelt. Venus retrograde in Beslaghuis III kan misverstanden veroorzaken.</p>
+<p><strong>Werk</strong><br>Uw rol groeit, maar communicatie is cruciaal. Jupiter in Randzone II benadrukt leiderschap.</p>
+<p><strong>Gezondheid</strong><br>Stresspunten op meridiaan V, ademhalingsoefeningen worden aangeraden.</p>`,
+
+    diffuus:`<p><strong>Algemene duiding</strong><br>De pannenkoek vermijdt scherpte; strategie is belangrijk. Planeten wijzen op langzame, maar constante verandering.</p>
+<p><strong>Liefde</strong><br>Er wordt iets niet uitgesproken, dat blijft voorlopig zo. Saturn in Beslaghuis I geeft stabiliteit ondanks onzekerheid.</p>
+<p><strong>Werk</strong><br>Een proces loopt door terwijl niemand kijkt. Mercury retrograde beïnvloedt deadlines subtiel.</p>
+<p><strong>Gezondheid</strong><br>Rustig aan, energie accumuleert in chakra IV. Kleine rituelen versterken balans.</p>`
+  };
+  return texts[profile];
+}
+
+function downloadReport(){
+  const c = document.createElement("canvas");
+  c.width = 800;
+  c.height = 1200;
+  const ctx = c.getContext("2d");
+
+  ctx.save();
+  const angle = (Math.random()-0.5)*0.03;
+  ctx.translate(400,50);
+  ctx.rotate(angle);
+  ctx.translate(-400,-50);
+
+  // Achtergrond gelijk aan site gradient
+  const bgGradient = ctx.createLinearGradient(0,0,0,1000);
+  bgGradient.addColorStop(0, "#f8c8dc");
+  bgGradient.addColorStop(1, "#e6d9ff");
+  ctx.fillStyle = bgGradient;
+  ctx.fillRect(0,0,800,1200);
+
+  ctx.fillStyle = "black";
+  ctx.font = "24px Comic Sans MS";
+  ctx.fillText("Simone Buys’ Batter-Based Pancake Prognostics Institute",50,40);
+  ctx.font = "16px Comic Sans MS";
+  ctx.fillText("Applied Pancake Divination · Astrocartography · Meridiaaninterpretatie",50,70);
+
+  ctx.restore();
+
+  // Foto
+  const img = document.getElementById("reportCanvas");
+  ctx.drawImage(img,50,100,480,480);
+
+  // Tekst helper om lijnen te breken binnen 480px
+  function wrapText(context, text, x, y, maxWidth, lineHeight){
+    const words = text.split(' ');
+    let line = '';
+    for(let n=0; n<words.length; n++){
+      const testLine = line + words[n] + ' ';
+      const metrics = context.measureText(testLine);
+      if(metrics.width > maxWidth && n > 0){
+        context.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    context.fillText(line, x, y);
+    return y + lineHeight;
+  }
+
+  ctx.font = "14px Comic Sans MS";
+  let y = 600;
+  const x = 50; //zelfde x-offset als foto
+  const maxWidth = 480; // breedte van foto
+
+  const pred = document.getElementById("predictionText").innerText.split("\n");
+  pred.forEach(line=>{
+    y = wrapText(ctx, line, x, y, maxWidth, 20);
+  });
+
+  const randSentence = randomSentences[Math.floor(Math.random()*randomSentences.length)];
+  y = wrapText(ctx, randSentence, x, y, maxWidth, 20);
+  y += 20;
+  y = wrapText(ctx, "Liefs Simone", x, y, maxWidth, 20);
+
+  ctx.font="10px Comic Sans MS";
+  ctx.fillStyle="gray";
+  wrapText(ctx, "Dit instituut biedt geen garanties en vervangt geen logisch denken.", x, 1180, maxWidth, 12);
+
+  const a = document.createElement("a");
+  a.href = c.toDataURL("image/png");
+  a.download = "Simone_Buys_Pancake_Report.png";
+  a.click();
+}
+
+</script>
+</body>
+</html>
